@@ -1,5 +1,7 @@
 import pygame
 from nlc_dino_runner.components.dinosaurio import Dino
+# from nlc_dino_runner.components.obstacles_main.class_parent import Obstacle
+from nlc_dino_runner.components.obstacles_main.obstacle_manager import ObstacleManager
 from nlc_dino_runner.utils.constants import (
     TITTLE,
     ICON,
@@ -22,6 +24,7 @@ class Game:
         self.game_speed = 20
         self.clock = pygame.time.Clock()
         self.player = Dino()
+        self.obstacle = ObstacleManager()
 
     def run(self):
         self.playing = True
@@ -38,15 +41,17 @@ class Game:
             if event.type == pygame.QUIT:
                 self.playing = False
 
-    def update(self):
+    def update(self):  # se crean nuevos objetos por cada ciclo?
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
+        self.obstacle.update(self) #
 
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_bg()
         self.player.draw(self.screen)
+        self.obstacle.draw(self.screen)
         pygame.display.flip()  # Update all our configs
 
     def draw_bg(self):
@@ -56,4 +61,4 @@ class Game:
         if self.x_position_bg <= -img_width:
             self.screen.blit(BG, (img_width + self.x_position_bg, self.y_position_bg))
             self.x_position_bg = 0
-        self.x_position_bg -= self.game_speed
+        # self.x_position_bg -= self.game_speed
