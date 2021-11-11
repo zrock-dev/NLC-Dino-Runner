@@ -70,3 +70,6 @@ HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 ICON = pygame.image.load(os.path.join(IMG_DIR, "DinoWallpaper.png"))
 
 DEFAULT_TYPE = "default"
+
+GAME_SPEED = 15
+
