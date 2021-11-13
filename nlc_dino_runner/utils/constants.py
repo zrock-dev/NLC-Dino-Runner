@@ -59,6 +59,7 @@ BIRD = [
     pygame.image.load(os.path.join(IMG_DIR, "Bird/Bird2.png")),
 ]
 
+
 CLOUD = pygame.image.load(os.path.join(IMG_DIR, 'Other/Cloud.png'))
 SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
 HAMMER = pygame.image.load(os.path.join(IMG_DIR, 'Other/hammer.png'))
@@ -72,4 +73,8 @@ ICON = pygame.image.load(os.path.join(IMG_DIR, "DinoWallpaper.png"))
 DEFAULT_TYPE = "default"
 
 GAME_SPEED = 15
+
+SHIELD_TYPE = "shield"
+FONT_TYPE = "freesansbold.ttf"
+BLACK_COLOR = (0, 0, 0)
 

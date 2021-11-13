@@ -1,6 +1,7 @@
 import pygame
 from nlc_dino_runner.components.dinosaurio import Dino
 from nlc_dino_runner.components.obstacles_main.obstacle_manager import ObstacleManager
+from nlc_dino_runner.components.powerups.power_up_manager import PowerUpManager
 from nlc_dino_runner.utils import text_utils
 from nlc_dino_runner.utils.constants import (
     TITTLE,
@@ -25,7 +26,8 @@ class Game:
         self.game_speed = GAME_SPEED
         self.clock = pygame.time.Clock()
         self.player = Dino()
-        self.obstacle = ObstacleManager()
+        self.obstacle_manager = ObstacleManager()
+        self.power_up_manager = PowerUpManager()
         self.points = 0
         self.running = False
         self.death_count = 0
@@ -38,6 +40,7 @@ class Game:
 
         score_element, score_element_rect = text_utils.get_score_element(self.points)
         self.screen.blit(score_element, score_element_rect)
+        self.player.check_invincibility(self.screen)
 
     def show_menu(self):
         white_color = (255, 255, 255)
@@ -86,14 +89,16 @@ class Game:
     def update(self):
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
-        self.obstacle.update(self)
+        self.obstacle_manager.update(self)
+        self.power_up_manager.update(self.points, self.game_speed, self.player)
 
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_bg()
         self.player.draw(self.screen)
-        self.obstacle.draw(self.screen)
+        self.obstacle_manager.draw(self.screen)
+        self.power_up_manager.draw(self.screen)
         self.score()
         pygame.display.flip()  # Update all our configs
 
