@@ -1,3 +1,5 @@
+import random
+
 import pygame.time
 from nlc_dino_runner.components.obstacles_main.cactus_child import Cactus
 from nlc_dino_runner.utils.constants import SMALL_CACTUS, GAME_SPEED
@@ -18,6 +20,7 @@ class ObstacleManager:
                     self.obstacles_list.remove(obstacle)
                 else:
                     pygame.time.delay(100)
+                    game.power_up_manager.when_appears = random.randint(200, 500)
                     game.death_count += 1
                     game.game_speed = GAME_SPEED
                     game.death_count_print = True

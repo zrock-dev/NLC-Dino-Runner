@@ -7,14 +7,14 @@ from nlc_dino_runner.components.powerups.shield import Shield
 class PowerUpManager:
     def __init__(self):
         self.power_ups = []
-        self.when_appears = 0
+        self.when_appears = random.randint(200, 500)
         self.points = 0
-        self.option_numbers = list(range(1, 10))
-
-    def reset_power_ups(self, points):
-        self.power_ups = []
-        self.points = points
-        self.when_appears = random.randint(200, 300) + self.points
+    #     self.option_numbers = list(range(1, 10))
+    #
+    # def reset_power_ups(self, points):
+    #     self.power_ups = []
+    #     self.points = points
+    #     self.when_appears = random.randint(200, 300) + self.points
 
     def generate_power_ups(self, points):
         self.points = points
