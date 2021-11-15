@@ -2,7 +2,7 @@ import random
 
 import pygame.time
 from nlc_dino_runner.components.obstacles_main.cactus_child import Cactus
-from nlc_dino_runner.utils.constants import SMALL_CACTUS, GAME_SPEED
+from nlc_dino_runner.utils.constants import SMALL_CACTUS, GAME_SPEED, HEART_NUMBER
 
 
 class ObstacleManager:
@@ -21,11 +21,14 @@ class ObstacleManager:
                 else:
                     pygame.time.delay(100)
                     game.power_up_manager.when_appears = random.randint(200, 500)
-                    game.death_count += 1
-                    game.game_speed = GAME_SPEED
                     game.death_count_print = True
+                    game.dino_lives.hearts_number -= 27
                     self.obstacle_reset()
-                    game.playing = False
+                    if game.dino_lives.hearts_number < 26:
+                        game.game_speed = GAME_SPEED
+                        game.death_count += 1
+                        game.playing = False
+                        game.dino_lives.hearts_number = 27 * HEART_NUMBER
                     break
 
     def draw(self, screen):

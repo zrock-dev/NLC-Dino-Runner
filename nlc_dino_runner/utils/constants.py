@@ -77,4 +77,5 @@ GAME_SPEED = 15
 SHIELD_TYPE = "shield"
 FONT_TYPE = "freesansbold.ttf"
 BLACK_COLOR = (0, 0, 0)
+HEART_NUMBER = 5
 
