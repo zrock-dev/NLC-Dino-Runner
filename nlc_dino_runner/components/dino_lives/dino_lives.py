@@ -12,21 +12,20 @@ class Hearts_block(Sprite):
         self.image_width = HEART.get_width()
         self.hearts_number = HEARTS_NUMBER
         self.trigger = False
+        self.image_y_pos = 20
         # Making up lists
-        coord_list = [(x * self.image_width, 30) for x in range(1, self.hearts_number + 1)]
-        self.image_list = [(HEART, coord) for coord in coord_list]
-        print(self.image_list)
+        coord_list = [(x * self.image_width, self.image_y_pos) for x in range(1, self.hearts_number + 1)]
+        self.images_list = [(HEART, coord) for coord in coord_list]
+        self.temporary_list = self.images_list.copy()
 
     def draw(self, screen):
         self.trigger = False if not self.hearts_number <= 1 else True
-        screen.blits(self.image_list)
+        screen.blits(self.temporary_list)
 
     def update_list(self):
-        self.image_list.pop()
+        self.temporary_list.pop()
         self.hearts_number -= 1
-        print(self.image_list)
 
-    def reset_hearts(self):
+    def reset_hearts_block(self):
         self.hearts_number = HEARTS_NUMBER
-        coord_list = [(x * self.image_width, 30) for x in range(1, self.hearts_number + 1)]
-        self.image_list = [(HEART, coord) for coord in coord_list]
+        self.temporary_list = self.images_list.copy()

@@ -2,7 +2,7 @@ import random
 
 import pygame.time
 from nlc_dino_runner.components.obstacles_main.cactus_child import Cactus
-from nlc_dino_runner.utils.constants import SMALL_CACTUS, GAME_SPEED, HEARTS_NUMBER
+from nlc_dino_runner.utils.constants import SMALL_CACTUS, GAME_SPEED
 
 
 class ObstacleManager:
@@ -19,16 +19,18 @@ class ObstacleManager:
                 if game.player.shield:
                     self.obstacles_list.remove(obstacle)
                 else:
-                    pygame.time.delay(100)
-                    game.power_up_manager.when_appears = random.randint(200, 500)
+                    game.power_up_manager.reset_power_ups(game.points)
                     game.death_count_print = True
-                    game.game_speed = GAME_SPEED
                     game.dino_lives.update_list()
-                    self.obstacle_reset()
+                    self.reset_obstacle()
                     if game.dino_lives.trigger:
+                        pygame.time.delay(100)
+                        game.game_speed = GAME_SPEED
                         game.points = 0
                         game.death_count += 1
-                        game.dino_lives.reset_hearts()
+                        game.dino_lives.reset_hearts_block()
+                        game.power_up_manager.reset_power_ups()
+                        self.reset_obstacle()
                         game.playing = False
                     break
 
@@ -36,5 +38,5 @@ class ObstacleManager:
         for obstacle in self.obstacles_list:
             obstacle.draw(screen)
 
-    def obstacle_reset(self):
-        self.obstacles_list = []
+    def reset_obstacle(self):
+        self.obstacles_list.clear()
