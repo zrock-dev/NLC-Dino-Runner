@@ -1,8 +1,8 @@
-import random
-
 import pygame.time
 from nlc_dino_runner.components.obstacles_main.cactus_child import Cactus
-from nlc_dino_runner.utils.constants import SMALL_CACTUS, GAME_SPEED
+from nlc_dino_runner.utils.constants import GAME_SPEED
+
+# Image monitor
 
 
 class ObstacleManager:
@@ -12,7 +12,7 @@ class ObstacleManager:
 
     def update(self, game):
         if len(self.obstacles_list) == 0:
-            self.obstacles_list.append(Cactus(SMALL_CACTUS))
+            self.obstacles_list.append(Cactus())
         for obstacle in self.obstacles_list:
             obstacle.update(self.obstacles_list, game)
             if game.player.dino_rect.colliderect(obstacle.rect):

@@ -1,6 +1,5 @@
 import random
 import pygame
-
 from nlc_dino_runner.components.powerups.shield import Shield
 
 
@@ -15,14 +14,15 @@ class PowerUpManager:
         self.power_ups.clear()
         self.points = points
         self.when_appears = random.randint(200, 300) + self.points
+        # print(" The actual power up will show at:", self.when_appears)
 
     def generate_power_ups(self):
         if len(self.power_ups) == 0:
             if self.when_appears == self.points:
-                print("generating power up at:", self.when_appears)
+                # print("generating power up at:", self.when_appears)
                 self.when_appears = random.randint(self.when_appears + 200, 500 + self.when_appears)
                 self.power_ups.append(Shield())
-                print(" The next power up will show at:", self.when_appears)
+                # print(" The next power up will show at:", self.when_appears)
 
     def update(self, points, game_speed, player):
         self.points = points
