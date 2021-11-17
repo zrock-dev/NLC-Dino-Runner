@@ -31,7 +31,7 @@ class ObstacleManager:
                         game.dino_lives.reset_hearts_block()
                         game.power_up_manager.reset_power_ups()
                         self.reset_obstacle()
-                        game.playing = False
+                        game.playing = True
                     break
 
     def draw(self, screen):

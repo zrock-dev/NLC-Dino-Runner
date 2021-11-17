@@ -1,6 +1,9 @@
 import random
 import pygame
+
+from nlc_dino_runner.components.powerups.hammer import Hammer
 from nlc_dino_runner.components.powerups.shield import Shield
+from nlc_dino_runner.utils.constants import HAMMER_TYPE
 
 
 class PowerUpManager:
@@ -21,14 +24,21 @@ class PowerUpManager:
             if self.when_appears == self.points:
                 # print("generating power up at:", self.when_appears)
                 self.when_appears = random.randint(self.when_appears + 200, 500 + self.when_appears)
-                self.power_ups.append(Shield())
+                # if 1 == 0:
+                #     self.power_ups.append(Shield())
+                # else:
+                self.power_ups.append(Hammer())
                 # print(" The next power up will show at:", self.when_appears)
 
-    def update(self, points, game_speed, player):
+    def update(self, points, game_speed, player, user_input):
         self.points = points
         self.generate_power_ups()
+
         for power_up in self.power_ups:
             power_up.update(game_speed, self.power_ups)
+            if player.type == HAMMER_TYPE:
+                if user_input[pygame.K_SPACE]:
+                    power_up.hammer_thrown(player.dino_rect.y)
             if player.dino_rect.colliderect(power_up.rect):
                 power_up.start_time = pygame.time.get_ticks()
                 player.shield = True
