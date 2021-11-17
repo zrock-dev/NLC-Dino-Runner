@@ -13,7 +13,7 @@ from nlc_dino_runner.utils.constants import (
     BG,
     FPS,
     GAME_SPEED,
-    WHITE_COLOR
+    WHITE_COLOR, CLOUD
 )
 
 
@@ -109,6 +109,7 @@ class Game:
         img_width = BG.get_width()
         self.screen.blit(BG, (self.x_position_bg, self.y_position_bg))  # blit draws a surface on another surface
         self.screen.blit(BG, (img_width + self.x_position_bg, self.y_position_bg))
+        self.screen.blit(CLOUD, (img_width + self.x_position_bg, 150))
         if self.x_position_bg <= -img_width:
             self.screen.blit(BG, (img_width + self.x_position_bg, self.y_position_bg))
             self.x_position_bg = 0
