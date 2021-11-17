@@ -76,7 +76,6 @@ class Dino(Sprite):
         self.step_index += 1
 
     def jump(self):
-        # self.image = JUMPING
         self.image = self.jump_img[self.type]
         if self.dino_jump:
             self.dino_rect.y -= self.jump_vel * 6

@@ -1,6 +1,6 @@
 import pygame
 
-from nlc_dino_runner.components.hearts.dino_lives import Hearts
+from nlc_dino_runner.components.dino_lives.dino_lives import Hearts_block
 from nlc_dino_runner.components.dinosaurio import Dino
 from nlc_dino_runner.components.obstacles_main.obstacle_manager import ObstacleManager
 from nlc_dino_runner.components.powerups.power_up_manager import PowerUpManager
@@ -12,7 +12,8 @@ from nlc_dino_runner.utils.constants import (
     SCREEN_WIDTH,
     BG,
     FPS,
-    GAME_SPEED
+    GAME_SPEED,
+    WHITE_COLOR, CLOUD
 )
 
 
@@ -30,7 +31,7 @@ class Game:
         self.player = Dino()
         self.obstacle_manager = ObstacleManager()
         self.power_up_manager = PowerUpManager()
-        self.dino_lives = Hearts()
+        self.dino_lives = Hearts_block()
         self.points = 0
         self.running = False
         self.death_count = 0
@@ -46,8 +47,7 @@ class Game:
         self.player.check_invincibility(self.screen)
 
     def show_menu(self):
-        white_color = (255, 255, 255)
-        self.screen.fill(white_color)
+        self.screen.fill(WHITE_COLOR)
         self.print_menu_elements()
         pygame.display.update()
         self.event_handler()
@@ -71,7 +71,6 @@ class Game:
                 self.run()
 
     def run(self):
-        self.points = 0
         self.playing = True
         while self.playing:
             self.events()
@@ -97,12 +96,12 @@ class Game:
 
     def draw(self):
         self.clock.tick(FPS)
-        self.screen.fill((255, 255, 255))
+        self.screen.fill(WHITE_COLOR)
         self.draw_bg()
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
         self.power_up_manager.draw(self.screen)
-        self.dino_lives.draw_hearts(self.screen)
+        self.dino_lives.draw(self.screen)
         self.score()
         pygame.display.flip()  # Update all our configs
 
@@ -110,6 +109,7 @@ class Game:
         img_width = BG.get_width()
         self.screen.blit(BG, (self.x_position_bg, self.y_position_bg))  # blit draws a surface on another surface
         self.screen.blit(BG, (img_width + self.x_position_bg, self.y_position_bg))
+        self.screen.blit(CLOUD, (img_width + self.x_position_bg, 150))
         if self.x_position_bg <= -img_width:
             self.screen.blit(BG, (img_width + self.x_position_bg, self.y_position_bg))
             self.x_position_bg = 0
