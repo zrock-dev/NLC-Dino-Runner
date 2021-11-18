@@ -37,7 +37,9 @@ class PowerUpManager:
     def update(self, points, game_speed, player, game):
         self.points = points
         self.generate_power_ups()
-        game.hammer_tool_manager.dino_status = True if self.dino_status else False  # Yes or not
+        if self.dino_status:
+            game.hammer_tool_manager.dino_status = True
+            game.hammer_tool_manager.dino_positions = player.dino_rect
 
         for power_up in self.power_ups:
             power_up.update(game_speed, self.power_ups)

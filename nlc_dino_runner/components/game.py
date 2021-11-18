@@ -93,6 +93,7 @@ class Game:
     def update(self):
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
+        self.hammer_tool_manager.update(user_input, self)
         self.obstacle_manager.update(self)
         self.power_up_manager.update(self.points, self.game_speed, self.player, self)
 
@@ -103,6 +104,7 @@ class Game:
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
         self.power_up_manager.draw(self.screen)
+        self.hammer_tool_manager.draw(self.screen)
         self.dino_lives.draw(self.screen)
         self.score()
         pygame.display.flip()  # Update all our configs

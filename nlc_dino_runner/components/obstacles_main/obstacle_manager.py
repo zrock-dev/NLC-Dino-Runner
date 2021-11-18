@@ -9,14 +9,17 @@ class ObstacleManager:
 
     def __init__(self):
         self.obstacles_list = []
+        self.obstacle_position = None
+        self.hammer_status = False
 
     def update(self, game):
         if len(self.obstacles_list) == 0:
             self.obstacles_list.append(Cactus())
         for obstacle in self.obstacles_list:
             obstacle.update(self.obstacles_list, game)
-            if game.player.dino_rect.colliderect(obstacle.rect):
-                if game.player.shield:
+            self.obstacle_position = obstacle.rect
+            if game.player.dino_rect.colliderect(obstacle.rect) or game.hammer_tool_manager.hammer_collision:
+                if game.player.shield or self.hammer_status:
                     self.obstacles_list.remove(obstacle)
                 else:
                     game.power_up_manager.reset_power_ups(game.points)
