@@ -11,12 +11,15 @@ class PowerUpManager:
         self.power_ups = []
         self.when_appears = random.randint(200, 500)
         self.points = 0
+        self.dino_status = False  # Does the dino has the hammer power up?
+
     #     self.option_numbers = list(range(1, 10))
 
     def reset_power_ups(self, points=0):
         self.power_ups.clear()
         self.points = points
         self.when_appears = random.randint(200, 300) + self.points
+
         # print(" The actual power up will show at:", self.when_appears)
 
     def generate_power_ups(self):
@@ -28,17 +31,16 @@ class PowerUpManager:
                 #     self.power_ups.append(Shield())
                 # else:
                 self.power_ups.append(Hammer())
+                self.dino_status = True
                 # print(" The next power up will show at:", self.when_appears)
 
-    def update(self, points, game_speed, player, user_input):
+    def update(self, points, game_speed, player, game):
         self.points = points
         self.generate_power_ups()
+        game.hammer_tool_manager.dino_status = True if self.dino_status else False  # Yes or not
 
         for power_up in self.power_ups:
             power_up.update(game_speed, self.power_ups)
-            if player.type == HAMMER_TYPE:
-                if user_input[pygame.K_SPACE]:
-                    power_up.hammer_thrown(player.dino_rect.y)
             if player.dino_rect.colliderect(power_up.rect):
                 power_up.start_time = pygame.time.get_ticks()
                 player.shield = True
