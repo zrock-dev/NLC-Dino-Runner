@@ -23,10 +23,10 @@ class ObstacleManager:
                     self.obstacles_list.remove(obstacle)
                 else:
                     game.power_up_manager.reset_power_ups(game.points)
-                    game.death_count_print = True
                     game.dino_lives.update_list()
                     self.reset_obstacle()
                     if game.dino_lives.trigger:
+                        game.death_count_print = True
                         pygame.time.delay(100)
                         game.game_speed = GAME_SPEED
                         game.points = 0
