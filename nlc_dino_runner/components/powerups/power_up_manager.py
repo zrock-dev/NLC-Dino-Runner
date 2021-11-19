@@ -51,6 +51,7 @@ class PowerUpManager:
 
                 else:
                     power_up.start_time = pygame.time.get_ticks()
+                    game.hammer_tool_manager.dino_status = False
                     player.shield = True
                     player.show_text = True
                     player.type = power_up.type

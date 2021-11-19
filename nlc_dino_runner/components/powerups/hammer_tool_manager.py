@@ -38,7 +38,7 @@ class HammerToolManager:
                 self.reset()
 
     def draw(self, screen):
-        if self.hammer_tool_status:
+        if self.hammer_tool_status and self.dino_status:
             self.temporal_hammer.draw(screen)
 
     def reset(self):
