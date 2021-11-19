@@ -3,6 +3,7 @@ import pygame
 from nlc_dino_runner.components.dino_lives.dino_lives import Hearts_block
 from nlc_dino_runner.components.dinosaurio import Dino
 from nlc_dino_runner.components.obstacles_main.obstacle_manager import ObstacleManager
+from nlc_dino_runner.components.powerups.hammer_tool_manager import HammerToolManager
 from nlc_dino_runner.components.powerups.power_up_manager import PowerUpManager
 from nlc_dino_runner.utils import text_utils
 from nlc_dino_runner.utils.constants import (
@@ -31,6 +32,7 @@ class Game:
         self.player = Dino()
         self.obstacle_manager = ObstacleManager()
         self.power_up_manager = PowerUpManager()
+        self.hammer_tool_manager = HammerToolManager()
         self.dino_lives = Hearts_block()
         self.points = 0
         self.running = False
@@ -91,8 +93,9 @@ class Game:
     def update(self):
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
+        self.hammer_tool_manager.update(user_input, self)
         self.obstacle_manager.update(self)
-        self.power_up_manager.update(self.points, self.game_speed, self.player, user_input)
+        self.power_up_manager.update(self.points, self.game_speed, self.player, self)
 
     def draw(self):
         self.clock.tick(FPS)
@@ -101,6 +104,7 @@ class Game:
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
         self.power_up_manager.draw(self.screen)
+        self.hammer_tool_manager.draw(self.screen)
         self.dino_lives.draw(self.screen)
         self.score()
         pygame.display.flip()  # Update all our configs

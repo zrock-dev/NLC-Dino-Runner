@@ -37,7 +37,11 @@ class Dino(Sprite):
         self.dino_jump = False
         self.jump_vel = self.JUMP_VEL
 
+        self.hammer = False
+        self.hammer_end = False
+
     def update(self, user_input):
+        self.check_hammer()
         if self.dino_run:
             self.run()
         if self.dino_duck:
@@ -99,6 +103,12 @@ class Dino(Sprite):
             else:
                 self.shield = False
                 self.update_type_to_default(SHIELD_TYPE)
+
+    def check_hammer(self):
+        if not self.hammer and self.hammer_end:
+            print('The dino skin has been reseated')
+            self.hammer_end = False
+            self.update_type_to_default(HAMMER_TYPE)
 
     def update_type_to_default(self, current_type):
         if self.type == current_type:
