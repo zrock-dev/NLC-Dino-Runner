@@ -1,6 +1,6 @@
 import pygame
 
-from nlc_dino_runner.components.dino_lives.dino_lives import Hearts_block
+from nlc_dino_runner.components.dino_lives import Hearts_block
 from nlc_dino_runner.components.dinosaurio import Dino
 from nlc_dino_runner.components.obstacles_main.obstacle_manager import ObstacleManager
 from nlc_dino_runner.components.powerups.hammer_tool_manager import HammerToolManager

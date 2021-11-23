@@ -1,45 +1,50 @@
 import pygame
-from nlc_dino_runner.utils.constants import SCREEN_WIDTH
 
+from nlc_dino_runner.components.powerups.hammer_tool import Hammer_Tool
+from nlc_dino_runner.utils.constants import SCREEN_WIDTH, HAMMER
 
 class HammerToolManager:
     def __init__(self):
         self.hammer_tools = []
+        self.items_counter = 0
         self.dino_status = False  # Does the dino has the hammer power up?
-        self.hammer_tool_status = False  # Is any hammer tool in use?
-        self.temporal_hammer = None  # The hammer in current use
         self.hammer_collision = False  # Has the hammer collide with any object?
+        self.space_counter = 0
 
     def update(self, keyboard_input, game):
-        if self.dino_status:
-            if keyboard_input[pygame.K_SPACE] and not self.hammer_tool_status:  # Has the dino thrown the hammer?
-                self.hammer_tool_status = True
-                self.temporal_hammer = self.hammer_tools.pop()
-                self.temporal_hammer.rect.x = game.player.dino_rect.x
-                self.temporal_hammer.rect.y = game.player.dino_rect.y
-                print('Hammer thrown. Remain:', len(self.hammer_tools))
+        if self.dino_status:  # The dino has the hammer power up
+            if keyboard_input[pygame.K_SPACE]:
+                self.space_counter += 1
 
-                if not self.hammer_tools:
-                    game.player.hammer = False
-                    game.player.hammer_end = True
+            if len(self.hammer_tools) <= 3 and self.space_counter == 3:
+                self.hammer_tools.append(Hammer_Tool(game.player.dino_rect.x, game.player.dino_rect.y))
+                self.items_counter += 1
+                print("hammer thrown: Left", 3 - self.items_counter)
+                self.space_counter = 0
 
-            if self.hammer_tool_status:
-                self.temporal_hammer.update()  # update hammer coord
-                if self.temporal_hammer.rect.colliderect(game.obstacle_manager.obstacle_position):
-                    self.hammer_collision = True
-                else:
+            for item in self.hammer_tools:
+                item.update()
+                self.check_collision(game, item)
+                if item.rect.x >= SCREEN_WIDTH:
+                    self.hammer_tools.remove(item)
                     self.hammer_collision = False
 
-                if self.temporal_hammer.rect.x >= SCREEN_WIDTH:
-                    self.hammer_collision = False
-                    self.hammer_tool_status = False
-
-            if not self.hammer_tools and not self.hammer_tool_status:  # Dino has no more tools :(
+            if self.items_counter == 3 and not self.hammer_tools:
+                game.player.hammer = False
+                game.player.hammer_end = True
                 self.reset()
 
+            print("Times space is pressed:", self.space_counter)
+
+    def check_collision(self, game, item):
+        if item.rect.colliderect(game.obstacle_manager.obstacle_position):
+            self.hammer_collision = True
+        else:
+            self.hammer_collision = False
+
     def draw(self, screen):
-        if self.hammer_tool_status and self.dino_status:
-            self.temporal_hammer.draw(screen)
+        objects_list = [(HAMMER, item.rect) for item in self.hammer_tools]
+        screen.blits(objects_list)
 
     def reset(self):
         self.dino_status = False

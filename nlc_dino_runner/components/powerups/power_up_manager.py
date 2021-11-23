@@ -28,7 +28,7 @@ class PowerUpManager:
             if self.when_appears == self.points:
                 # print("generating power up at:", self.when_appears)
                 self.when_appears = random.randint(self.when_appears + 200, 500 + self.when_appears)
-                if random.randint(0, 20) <= 10:
+                if random.randint(0, 1) == 1:
                     self.power_ups.append(Shield())
                 else:
                     self.power_ups.append(Hammer())
@@ -46,7 +46,8 @@ class PowerUpManager:
                     player.type = power_up.type
                     game.hammer_tool_manager.dino_status = True
                     game.player.hammer = True
-                    game.hammer_tool_manager.hammer_tools = [Hammer_Tool()] * 3
+                    print("hammer activated")
+                    # game.hammer_tool_manager.hammer_tools = [Hammer_Tool()] * 3
                     self.power_ups.remove(power_up)
 
                 else:
