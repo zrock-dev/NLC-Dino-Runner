@@ -46,7 +46,6 @@ class PowerUpManager:
                     player.type = power_up.type
                     game.hammer_tool_manager.dino_status = True
                     game.player.hammer = True
-                    print("hammer activated")
                     # game.hammer_tool_manager.hammer_tools = [Hammer_Tool()] * 3
                     self.power_ups.remove(power_up)
 
