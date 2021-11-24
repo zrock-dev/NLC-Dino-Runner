@@ -106,7 +106,6 @@ class Dino(Sprite):
 
     def check_hammer(self):
         if not self.hammer and self.hammer_end:
-            print('The dino skin has been reseated')
             self.hammer_end = False
             self.update_type_to_default(HAMMER_TYPE)
 
