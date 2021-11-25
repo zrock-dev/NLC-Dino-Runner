@@ -104,7 +104,8 @@ class Game:
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
         self.power_up_manager.draw(self.screen)
-        self.hammer_tool_manager.draw(self.screen)
+        if self.hammer_tool_manager.dino_status:
+            self.hammer_tool_manager.draw(self.screen)
         self.dino_lives.draw(self.screen)
         self.score()
         pygame.display.flip()  # Update all our configs
