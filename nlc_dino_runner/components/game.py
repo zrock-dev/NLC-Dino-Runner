@@ -1,5 +1,6 @@
 import pygame
 
+from nlc_dino_runner.components.cloud.cloud_manager import Cloud_manager
 from nlc_dino_runner.components.dino_lives import Hearts_block
 from nlc_dino_runner.components.dinosaurio import Dino
 from nlc_dino_runner.components.obstacles_main.obstacle_manager import ObstacleManager
@@ -34,6 +35,7 @@ class Game:
         self.power_up_manager = PowerUpManager()
         self.hammer_tool_manager = HammerToolManager()
         self.dino_lives = Hearts_block()
+        self.cloud_manager = Cloud_manager()
         self.points = 0
         self.running = False
         self.death_count = 0
@@ -42,7 +44,7 @@ class Game:
     def score(self):
         self.points += 1
         if self.points % 20 == 0:
-            self.game_speed += .5
+            self.game_speed += .3
 
         score_element, score_element_rect = text_utils.get_score_element(self.points)
         self.screen.blit(score_element, score_element_rect)
@@ -96,6 +98,7 @@ class Game:
         self.hammer_tool_manager.update(user_input, self)
         self.obstacle_manager.update(self)
         self.power_up_manager.update(self.points, self.game_speed, self.player, self)
+        self.cloud_manager.update()
 
     def draw(self):
         self.clock.tick(FPS)
@@ -107,6 +110,7 @@ class Game:
         if self.hammer_tool_manager.dino_status:
             self.hammer_tool_manager.draw(self.screen)
         self.dino_lives.draw(self.screen)
+        self.cloud_manager.draw(self.screen)
         self.score()
         pygame.display.flip()  # Update all our configs
 
@@ -114,7 +118,6 @@ class Game:
         img_width = BG.get_width()
         self.screen.blit(BG, (self.x_position_bg, self.y_position_bg))  # blit draws a surface on another surface
         self.screen.blit(BG, (img_width + self.x_position_bg, self.y_position_bg))
-        self.screen.blit(CLOUD, (img_width + self.x_position_bg, 150))
         if self.x_position_bg <= -img_width:
             self.screen.blit(BG, (img_width + self.x_position_bg, self.y_position_bg))
             self.x_position_bg = 0
