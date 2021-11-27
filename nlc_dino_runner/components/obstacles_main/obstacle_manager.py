@@ -31,6 +31,8 @@ class ObstacleManager:
 
             if game.hammer_tool_manager.hammer_collision:
                 self.obstacles_list.remove(obstacle)
+                game.hammer_tool_manager.hammer_collision = False
+                # print(f'Said object removed at {obstacle.rect.x}')
 
     def death_protocol(self, game):
         game.death_count_print = True

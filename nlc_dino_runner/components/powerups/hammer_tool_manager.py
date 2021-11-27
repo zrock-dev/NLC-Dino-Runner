@@ -22,14 +22,16 @@ class HammerToolManager:
                     self.keyboard_validator = False
                     self.set_hammer_tool(game)
                     self.start_time = get_ticks()
-                if (get_ticks() - self.start_time) >= 45:
+                if (get_ticks() - self.start_time) >= 70:
                     self.keyboard_validator = True
                     self.start_time = 0
 
             for item in self.hammer_tools:
                 if item.validity:
-                    item.update()
-                self.check_collision(game, item)
+                    item.update(game)
+                if item.object_collision:
+                    self.hammer_collision = True
+
                 if item.rect.x >= SCREEN_WIDTH and item.validity:
                     # self.hammer_collision = False
                     self.off_screen_counter += 1
@@ -46,11 +48,12 @@ class HammerToolManager:
                 # print("Number of items at the end", self.off_screen_counter)
                 self.reset()
 
-    def check_collision(self, game, item):
-        if item.rect.colliderect(game.obstacle_manager.obstacle_position) and item.validity:
-            self.hammer_collision = True
-        else:
-            self.hammer_collision = False
+    # def check_collision(self, game, item):
+    #     if item.rect.colliderect(game.obstacle_manager.obstacle_position) and item.validity:
+    #         self.hammer_collision = True
+    #         print(f'Item nro {self.hammer_tools.index(item)} at {item.rect.x} has collided')
+    #     else:
+    #         self.hammer_collision = False
 
     def set_hammer_tool(self, game):
         if len(self.hammer_tools) <= 2:
@@ -62,8 +65,9 @@ class HammerToolManager:
 
     def draw(self, screen):
         objects_list = [(HAMMER, item.rect) for item in self.hammer_tools if item.validity]
-        hammer_count = write_on_screen(f"{3 - len(self.hammer_tools)}/3", 25, (1015, 35))
-        objects_list.append(hammer_count)
+        hammer_count = write_on_screen(f"{3 - len(self.hammer_tools)}/3", 20, (1055, 33))
+        if (3 - len(self.hammer_tools)) >= 1:
+            objects_list.append(hammer_count)
         screen.blits(objects_list)
 
     def reset(self):

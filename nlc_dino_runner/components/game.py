@@ -94,11 +94,11 @@ class Game:
 
     def update(self):
         user_input = pygame.key.get_pressed()
+        self.cloud_manager.update()
+        self.power_up_manager.update(self.points, self.game_speed, self.player, self)
         self.player.update(user_input)
         self.hammer_tool_manager.update(user_input, self)
         self.obstacle_manager.update(self)
-        self.power_up_manager.update(self.points, self.game_speed, self.player, self)
-        self.cloud_manager.update()
 
     def draw(self):
         self.clock.tick(FPS)

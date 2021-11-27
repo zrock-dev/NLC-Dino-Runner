@@ -5,15 +5,21 @@ from pygame.time import get_ticks
 class Cloud_manager:
     def __init__(self):
         self.clouds = []
+        self.cloud_add = True
+        self.start_time = 0
 
     def update(self):
-        if len(self.clouds) <= 4 or self.clouds[-2].rect.x <= 200:
+        if self.cloud_add and len(self.clouds) < 4:
+            self.cloud_add = False
             self.clouds.append(Cloud())
+            print('Cloud added')
+            self.start_time = get_ticks()
+        if (get_ticks() - self.start_time) >= 5000:
+            self.cloud_add = True
+            self.start_time = 0
 
         for cloud in self.clouds:
-            cloud.update()
-            if not cloud.validity:
-                self.clouds.remove(cloud)
+            cloud.update(self.clouds)
 
     def draw(self, screen):
         object_list = [(cloud.image, cloud.rect) for cloud in self.clouds if
