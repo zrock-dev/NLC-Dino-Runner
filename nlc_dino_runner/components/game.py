@@ -15,7 +15,7 @@ from nlc_dino_runner.utils.constants import (
     BG,
     FPS,
     GAME_SPEED,
-    WHITE_COLOR, CLOUD
+    WHITE_COLOR, CLOUD, DEFAULT_TYPE
 )
 
 
@@ -40,6 +40,7 @@ class Game:
         self.running = False
         self.death_count = 0
         self.death_count_print = False
+        self.off_screen = False
 
     def score(self):
         self.points += 1
@@ -51,8 +52,8 @@ class Game:
         self.player.check_invincibility(self.screen)
 
     def show_menu(self):
-        self.screen.fill(WHITE_COLOR)
-        self.print_menu_elements()
+        # self.screen.fill(WHITE_COLOR)
+        # self.print_menu_elements()
         pygame.display.update()
         self.event_handler()
 
@@ -72,6 +73,7 @@ class Game:
                 pygame.display.quit()
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
+                self.reset_game()
                 self.run()
 
     def run(self):
@@ -80,6 +82,9 @@ class Game:
             self.events()
             self.update()
             self.draw()
+            if self.off_screen:
+                print("Cycle finalized")
+                self.off_screen = False
 
     def execute(self):
         self.running = True
@@ -102,16 +107,17 @@ class Game:
 
     def draw(self):
         self.clock.tick(FPS)
-        self.screen.fill(WHITE_COLOR)
-        self.draw_bg()
-        self.player.draw(self.screen)
+        if self.playing:
+            self.screen.fill(WHITE_COLOR)
+            self.draw_bg()
+            self.player.draw(self.screen)
+            self.power_up_manager.draw(self.screen)
+            if self.hammer_tool_manager.dino_status:
+                self.hammer_tool_manager.draw(self.screen)
+            self.dino_lives.draw(self.screen)
+            self.cloud_manager.draw(self.screen)
+            self.score()
         self.obstacle_manager.draw(self.screen)
-        self.power_up_manager.draw(self.screen)
-        if self.hammer_tool_manager.dino_status:
-            self.hammer_tool_manager.draw(self.screen)
-        self.dino_lives.draw(self.screen)
-        self.cloud_manager.draw(self.screen)
-        self.score()
         pygame.display.flip()  # Update all our configs
 
     def draw_bg(self):
@@ -122,3 +128,13 @@ class Game:
             self.screen.blit(BG, (img_width + self.x_position_bg, self.y_position_bg))
             self.x_position_bg = 0
         self.x_position_bg -= self.game_speed
+
+    def reset_game(self):
+        self.game_speed = GAME_SPEED
+        self.points = 0
+        self.death_count += 1
+        self.player.type = DEFAULT_TYPE
+        self.dino_lives.reset_hearts_block()
+        self.power_up_manager.reset_power_ups()
+        self.obstacle_manager.reset_obstacle()
+        self.hammer_tool_manager.reset()

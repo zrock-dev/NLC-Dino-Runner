@@ -12,7 +12,6 @@ class Cloud_manager:
         if self.cloud_add and len(self.clouds) < 4:
             self.cloud_add = False
             self.clouds.append(Cloud())
-            print('Cloud added')
             self.start_time = get_ticks()
         if (get_ticks() - self.start_time) >= 5000:
             self.cloud_add = True

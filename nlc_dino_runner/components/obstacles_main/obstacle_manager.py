@@ -1,6 +1,6 @@
 import pygame.time
 from nlc_dino_runner.components.obstacles_main.cactus_child import Cactus
-from nlc_dino_runner.utils.constants import GAME_SPEED, DEFAULT_TYPE
+from nlc_dino_runner.utils.constants import GAME_SPEED, DEFAULT_TYPE, GAME_OVER
 
 
 # Image monitor
@@ -22,11 +22,11 @@ class ObstacleManager:
                 if game.player.shield:
                     self.obstacles_list.remove(obstacle)
                 else:
-                    game.power_up_manager.reset_power_ups(game.points)
+                    # game.power_up_manager.reset_power_ups(game.points)
                     game.dino_lives.update_list()
                     self.reset_obstacle()
                     if game.dino_lives.trigger:
-                        self.death_protocol(game)
+                        self.game_over(game)
                     break
 
             if game.hammer_tool_manager.hammer_collision:
@@ -34,18 +34,26 @@ class ObstacleManager:
                 game.hammer_tool_manager.hammer_collision = False
                 # print(f'Said object removed at {obstacle.rect.x}')
 
-    def death_protocol(self, game):
-        game.death_count_print = True
+    def game_over(self, game):
+        game.off_screen = True
         game.playing = False
-        game.game_speed = GAME_SPEED
-        game.points = 0
-        game.death_count += 1
-        game.player.type = DEFAULT_TYPE
-        game.dino_lives.reset_hearts_block()
-        game.power_up_manager.reset_power_ups()
-        self.reset_obstacle()
-        game.hammer_tool_manager.reset()
-        pygame.time.delay(100)
+        object_list = [(GAME_OVER[0], (80, 330)), (GAME_OVER[1], (300, 200)), (GAME_OVER[2], (420, 280))]
+        game.screen.blits(object_list)
+        pygame.display.update()
+        print("game over")
+
+    # def death_protocol(self, game):
+    #     game.death_count_print = True
+    #     game.playing = False
+    #     game.game_speed = GAME_SPEED
+    #     game.points = 0
+    #     game.death_count += 1
+    #     game.player.type = DEFAULT_TYPE
+    #     game.dino_lives.reset_hearts_block()
+    #     game.power_up_manager.reset_power_ups()
+    #     self.reset_obstacle()
+    #     game.hammer_tool_manager.reset()
+    #     pygame.time.delay(100)
 
     def draw(self, screen):
         for obstacle in self.obstacles_list:

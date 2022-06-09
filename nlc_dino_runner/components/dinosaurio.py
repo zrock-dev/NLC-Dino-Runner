@@ -98,7 +98,7 @@ class Dino(Sprite):
                     font = pygame.font.Font(FONT_TYPE, 15)
                     text = font.render(f'Shield enable for {time_to_show}', True, BLACK_COLOR)
                     text_rect = text.get_rect()
-                    text_rect.center = (500, 50)
+                    text_rect.center = (500, 450)
                     screen.blit(text, text_rect)
             else:
                 self.shield = False
